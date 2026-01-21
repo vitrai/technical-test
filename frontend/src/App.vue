@@ -20,8 +20,12 @@ const handleInputChange = async (_e: Event): Promise<void> => {
       },
       body: JSON.stringify({ text: inputValue.value }),
     });
-    const data = (await response.json()) as { message: string };
-    apiResponse.value = `Response: ${data.message}`;
+    const data = (await response.json()) as { solution?: string; error?: string };
+    if (data.solution) {
+      apiResponse.value = data.solution;
+    } else if (data.error) {
+      apiResponse.value = `Error: ${data.error}`;
+    }
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     apiResponse.value = `Error: ${errorMessage}`;
@@ -40,19 +44,19 @@ const handleInputChange = async (_e: Event): Promise<void> => {
     <main>
       <div class="input-container">
         <label for="textbox">Enter text:</label>
-        <input
+        <textarea
           id="textbox"
           v-model="inputValue"
-          type="text"
           placeholder="Type something..."
           class="text-input"
+          rows="10"
           @input="handleInputChange"
-        />
+        ></textarea>
       </div>
 
       <div v-if="isLoading" class="status">Loading...</div>
       <div v-else-if="apiResponse" class="response">
-        {{ apiResponse }}
+        <pre>{{ apiResponse }}</pre>
       </div>
     </main>
   </div>
@@ -91,6 +95,8 @@ label {
   border: 2px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
+  font-family: monospace;
+  resize: vertical;
 }
 
 .text-input:focus {
@@ -113,5 +119,12 @@ label {
 .response {
   background-color: #e8f5e9;
   color: #2e7d32;
+}
+
+.response pre {
+  margin: 0;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 </style>

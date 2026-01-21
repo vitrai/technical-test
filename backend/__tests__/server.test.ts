@@ -2,15 +2,34 @@ import request from 'supertest';
 import app from '../src/server.js';
 
 describe('POST /do-work', () => {
-  it('should return 200 OK', async () => {
-    const response = await request(app).post('/do-work').expect(200);
+  it('should return 200 OK with solution', async () => {
+    const input = `4
+move 3 onto 1
+move 2 over 1
+pile 0 onto 1
+quit`;
+    const response = await request(app)
+      .post('/do-work')
+      .send({ text: input })
+      .expect(200);
 
-    expect(response.body).toHaveProperty('message', 'OK');
+    expect(response.body).toHaveProperty('solution');
+    expect(typeof response.body.solution).toBe('string');
+    expect(response.body.solution).toContain('0:');
   });
 
   it('should return JSON content type', async () => {
-    const response = await request(app).post('/do-work');
+    const input = `4
+move 3 onto 1
+quit`;
+    const response = await request(app).post('/do-work').send({ text: input });
 
     expect(response.headers['content-type']).toMatch(/json/);
+  });
+
+  it('should return 400 for invalid input', async () => {
+    const response = await request(app).post('/do-work').send({}).expect(400);
+
+    expect(response.body).toHaveProperty('error');
   });
 });

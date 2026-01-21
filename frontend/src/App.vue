@@ -44,14 +44,24 @@ const handleInputChange = async (): Promise<void> => {
           id="textbox"
           v-model="inputValue"
           type="text"
-          @input="handleInputChange"
           placeholder="Type something..."
           class="text-input"
-        />
+          @input="handleInputChange"
+        >
       </div>
 
-      <div v-if="isLoading" class="status">Loading...</div>
-      <div v-else-if="apiResponse" class="response">{{ apiResponse }}</div>
+      <div
+        v-if="isLoading"
+        class="status"
+      >
+        Loading...
+      </div>
+      <div
+        v-else-if="apiResponse"
+        class="response"
+      >
+        {{ apiResponse }}
+      </div>
     </main>
   </div>
 </template>

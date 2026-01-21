@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import App from '../App.vue';
 
 // Mock fetch
-globalThis.fetch = vi.fn() as any;
+globalThis.fetch = vi.fn() as typeof fetch;
 
 describe('App', () => {
   beforeEach(() => {

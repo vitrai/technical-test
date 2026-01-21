@@ -3,11 +3,11 @@ import { mount } from '@vue/test-utils'
 import App from '../App.vue'
 
 // Mock fetch
-global.fetch = vi.fn()
+globalThis.fetch = vi.fn() as any
 
 describe('App', () => {
   beforeEach(() => {
-    fetch.mockReset()
+    vi.mocked(fetch).mockReset()
   })
 
   it('renders the component', () => {
@@ -27,8 +27,8 @@ describe('App', () => {
       ok: true,
       status: 200,
       json: vi.fn().mockResolvedValue({ message: 'OK' }),
-    }
-    fetch.mockResolvedValueOnce(mockResponse)
+    } as unknown as Response
+    vi.mocked(fetch).mockResolvedValueOnce(mockResponse)
 
     const wrapper = mount(App)
     const input = wrapper.find('input#textbox')

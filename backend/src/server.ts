@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 
 const app = express();
@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-app.post('/do-work', (req, res) => {
+app.post('/do-work', (req: Request, res: Response) => {
   res.status(200).json({ message: 'OK' });
 });
 

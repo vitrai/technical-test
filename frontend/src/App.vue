@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 
-const inputValue = ref('')
-const apiResponse = ref('')
-const isLoading = ref(false)
+const inputValue = ref<string>('')
+const apiResponse = ref<string>('')
+const isLoading = ref<boolean>(false)
 
-const handleInputChange = async () => {
+const handleInputChange = async (): Promise<void> => {
   if (!inputValue.value.trim()) {
     apiResponse.value = ''
     return
@@ -20,10 +20,11 @@ const handleInputChange = async () => {
       },
       body: JSON.stringify({ text: inputValue.value }),
     })
-    const data = await response.json()
+    const data = await response.json() as { message: string }
     apiResponse.value = `Response: ${data.message}`
   } catch (error) {
-    apiResponse.value = `Error: ${error.message}`
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    apiResponse.value = `Error: ${errorMessage}`
   } finally {
     isLoading.value = false
   }

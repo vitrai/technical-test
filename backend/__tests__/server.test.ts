@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../server.js';
+import app from '../src/server.js';
 
 describe('POST /do-work', () => {
   it('should return 200 OK', async () => {

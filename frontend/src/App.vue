@@ -5,7 +5,7 @@ const inputValue = ref<string>('');
 const apiResponse = ref<string>('');
 const isLoading = ref<boolean>(false);
 
-const handleInputChange = async (): Promise<void> => {
+const handleInputChange = async (_e: Event): Promise<void> => {
   if (!inputValue.value.trim()) {
     apiResponse.value = '';
     return;
@@ -47,19 +47,11 @@ const handleInputChange = async (): Promise<void> => {
           placeholder="Type something..."
           class="text-input"
           @input="handleInputChange"
-        >
+        />
       </div>
 
-      <div
-        v-if="isLoading"
-        class="status"
-      >
-        Loading...
-      </div>
-      <div
-        v-else-if="apiResponse"
-        class="response"
-      >
+      <div v-if="isLoading" class="status">Loading...</div>
+      <div v-else-if="apiResponse" class="response">
         {{ apiResponse }}
       </div>
     </main>

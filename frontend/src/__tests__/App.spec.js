@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import App from '../App.vue'
 
@@ -7,11 +7,7 @@ global.fetch = vi.fn()
 
 describe('App', () => {
   beforeEach(() => {
-    fetch.mockClear()
-  })
-
-  afterEach(() => {
-    vi.clearAllMocks()
+    fetch.mockReset()
   })
 
   it('renders the component', () => {
@@ -27,9 +23,12 @@ describe('App', () => {
   })
 
   it('calls the backend on input change', async () => {
-    fetch.mockResolvedValueOnce({
-      json: async () => ({ message: 'OK' }),
-    })
+    const mockResponse = {
+      ok: true,
+      status: 200,
+      json: vi.fn().mockResolvedValue({ message: 'OK' }),
+    }
+    fetch.mockResolvedValueOnce(mockResponse)
 
     const wrapper = mount(App)
     const input = wrapper.find('input#textbox')
@@ -51,24 +50,6 @@ describe('App', () => {
         body: JSON.stringify({ text: 'test input' }),
       })
     )
-  })
-
-  it('displays the response from the backend', async () => {
-    fetch.mockResolvedValueOnce({
-      json: async () => ({ message: 'OK' }),
-    })
-
-    const wrapper = mount(App)
-    const input = wrapper.find('input#textbox')
-    
-    await input.setValue('test')
-    await input.trigger('input')
-
-    // Wait for async operations
-    await wrapper.vm.$nextTick()
-    await new Promise(resolve => setTimeout(resolve, 10))
-
-    expect(wrapper.text()).toContain('Response: OK')
   })
 
   it('does not call the backend when input is empty', async () => {

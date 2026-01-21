@@ -3,5 +3,6 @@ export default {
   transform: {},
   testMatch: ['**/__tests__/**/*.test.js'],
   collectCoverageFrom: ['server.js'],
-  coverageDirectory: 'coverage'
+  coverageDirectory: 'coverage',
+  setupFiles: ['<rootDir>/jest.setup.js']
 };

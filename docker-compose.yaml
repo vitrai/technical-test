@@ -5,12 +5,12 @@ services:
     command: sh -c "npm install && npm run dev"
     volumes:
       - ./backend:/app
-      - /app/node_modules
+      - ./backend/node_modules/:/app/node_modules
     ports:
-      - "3001:3001"
+      - "5170:5170"
     environment:
       - NODE_ENV=development
-      - PORT=3001
+      - PORT=5170
     networks:
       - app-network
 
@@ -20,7 +20,7 @@ services:
     command: sh -c "npm install && npm run dev -- --host"
     volumes:
       - ./frontend:/app
-      - /app/node_modules
+      - ./frontend/node_modules:/app/node_modules
     ports:
       - "5173:5173"
     environment:

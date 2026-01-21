@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const inputValue = ref<string>('')
-const apiResponse = ref<string>('')
-const isLoading = ref<boolean>(false)
+const inputValue = ref<string>('');
+const apiResponse = ref<string>('');
+const isLoading = ref<boolean>(false);
 
 const handleInputChange = async (): Promise<void> => {
   if (!inputValue.value.trim()) {
-    apiResponse.value = ''
-    return
+    apiResponse.value = '';
+    return;
   }
 
-  isLoading.value = true
+  isLoading.value = true;
   try {
-    const response = await fetch('http://localhost:3001/do-work', {
+    const response = await fetch('http://localhost:5170/do-work', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ text: inputValue.value }),
-    })
-    const data = await response.json() as { message: string }
-    apiResponse.value = `Response: ${data.message}`
+    });
+    const data = (await response.json()) as { message: string };
+    apiResponse.value = `Response: ${data.message}`;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-    apiResponse.value = `Error: ${errorMessage}`
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    apiResponse.value = `Error: ${errorMessage}`;
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 </script>
 
 <template>

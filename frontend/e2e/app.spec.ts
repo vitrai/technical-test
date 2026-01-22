@@ -18,10 +18,10 @@ quit`;
     await textarea.fill(blocksInput);
 
     // Wait for any response to appear (the solution will vary but should contain numbers and colons)
-    await expect(page.locator('.response')).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('.result')).toBeVisible({ timeout: 5000 });
 
     // Verify response contains expected format (line with "0:" or similar)
-    const response = page.locator('.response pre');
+    const response = page.locator('.result pre');
     await expect(response).toContainText('0:');
   });
 
@@ -31,6 +31,6 @@ quit`;
     const textarea = page.getByPlaceholder('Type something...');
     await textarea.clear();
 
-    await expect(page.locator('.response')).not.toBeVisible();
+    await expect(page.locator('.result')).not.toBeVisible();
   });
 });

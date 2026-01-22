@@ -39,6 +39,16 @@ const handleInputChange = async (_e: Event): Promise<void> => {
     </header>
 
     <main>
+      <div>
+        <h2>Sample input:</h2>
+        <pre>
+5
+move 2 over 1
+move 3 over 2
+pile 1 onto 0
+quit
+        </pre>
+      </div>
       <div class="input-container">
         <label for="textbox">Enter text:</label>
         <textarea
@@ -99,8 +109,7 @@ label {
   border-color: #42b883;
 }
 
-.status,
-.response {
+.status {
   padding: 1rem;
   border-radius: 4px;
   margin-top: 1rem;

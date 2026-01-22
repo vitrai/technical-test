@@ -19,6 +19,12 @@ defineProps({
 </template>
 
 <style scoped>
+.result > div {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
 .result .success {
   background-color: #e8f5e9;
   color: #2e7d32;

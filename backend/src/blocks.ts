@@ -1,4 +1,5 @@
 export function doBlocks(input: string): string {
+  // Solves the blocks problem described here: https://onlinejudge.org/external/1/101.pdf
   const lines = input.trim().split('\n');
   const n = parseInt(lines[0], 10);
   const commands = lines.slice(1);

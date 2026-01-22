@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { doBlocks } from './blocks.js';
+import { doBlocks } from './blocks';
 
 const app = express();
 const PORT = process.env.PORT || 5170;

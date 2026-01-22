@@ -14,7 +14,9 @@ quit`;
       .expect(200);
 
     expect(response.body).toHaveProperty('solution');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect(typeof response.body.solution).toBe('string');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect(response.body.solution).toContain('0:');
   });
 

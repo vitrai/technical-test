@@ -8,14 +8,15 @@ const PORT = process.env.PORT || 5170;
 app.use(cors());
 app.use(express.json());
 
-app.post('/do-work', async (req: Request, res: Response) => {
+app.post('/do-work', (req: Request, res: Response): void => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { text } = req.body;
     if (!text || typeof text !== 'string') {
       res.status(400).json({ error: 'Invalid input' });
       return;
     }
-    const solution = await doBlocks(text);
+    const solution = doBlocks(text);
     res.status(200).json({ solution });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';

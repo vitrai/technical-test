@@ -1,4 +1,4 @@
-export async function doBlocks(input: string): Promise<string> {
+export function doBlocks(input: string): string {
   const lines = input.trim().split('\n');
   const n = parseInt(lines[0], 10);
   const commands = lines.slice(1);

@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import Result from './Result.vue';
 
 const inputValue = ref<string>('');
-const apiResponse = ref<string>('');
+const apiResponse = ref<{ solution?: string; error?: string } | null>(null);
 const isLoading = ref<boolean>(false);
 
 const handleInputChange = async (_e: Event): Promise<void> => {
   if (!inputValue.value.trim()) {
-    apiResponse.value = '';
+    apiResponse.value = null;
     return;
   }
 
@@ -21,14 +22,10 @@ const handleInputChange = async (_e: Event): Promise<void> => {
       body: JSON.stringify({ text: inputValue.value }),
     });
     const data = (await response.json()) as { solution?: string; error?: string };
-    if (data.solution) {
-      apiResponse.value = data.solution;
-    } else if (data.error) {
-      apiResponse.value = `Error: ${data.error}`;
-    }
+    apiResponse.value = data;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    apiResponse.value = `Error: ${errorMessage}`;
+    apiResponse.value = { error: `Error: ${errorMessage}` };
   } finally {
     isLoading.value = false;
   }
@@ -55,9 +52,7 @@ const handleInputChange = async (_e: Event): Promise<void> => {
       </div>
 
       <div v-if="isLoading" class="status">Loading...</div>
-      <div v-else-if="apiResponse" class="response">
-        <pre>{{ apiResponse }}</pre>
-      </div>
+      <Result v-else-if="apiResponse" :api-response="apiResponse" />
     </main>
   </div>
 </template>
@@ -114,17 +109,5 @@ label {
 .status {
   background-color: #f0f0f0;
   color: #666;
-}
-
-.response {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
-
-.response pre {
-  margin: 0;
-  font-family: monospace;
-  white-space: pre-wrap;
-  word-wrap: break-word;
 }
 </style>

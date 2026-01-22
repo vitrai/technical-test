@@ -88,6 +88,38 @@ export function solveBlocks(input: string): string {
   return state.map((x, i) => `${i}: ${x.join(' ')}`).join('\n');
 }
 
+// Command syntax validator
+const commandRegex = /(move|pile)\s+(\d+)\s+(onto|over)\s+(\d+)/i;
+const initCommandRegex = /(\d)+/;
+const quitCommandRegex = /quit/i;
+const combinedCommandRegex = new RegExp(
+  `^(${commandRegex.source}|${initCommandRegex.source}|${quitCommandRegex.source})$`,
+  'im',
+);
+
+export function validateBlocks(command: string): {
+  valid: boolean;
+  error?: string;
+  command?: string;
+} {
+  const trimmedCommand = command.trim();
+  if (!trimmedCommand) {
+    return { valid: false, error: 'Command cannot be empty' };
+  }
+
+  for (const commandLine of trimmedCommand.split('\n')) {
+    if (!combinedCommandRegex.test(commandLine)) {
+      return {
+        valid: false,
+        error: `Invalid command syntax. Expected format: "move/pile <number> onto/over <number>", a number, or "quit" (received: "${commandLine}")`,
+        command: trimmedCommand,
+      };
+    }
+  }
+
+  return { valid: true };
+}
+
 const getBlocksAbove = (block: number, pos: number, state: number[][]): number[] => {
   const stack = state[pos];
   const indexOfBlock = stack.indexOf(block);

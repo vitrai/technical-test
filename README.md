@@ -7,9 +7,7 @@ Vitr.ai developer technical test
 - Read this README.md (that's why it's named this way!)
 - Ensure the app runs correctly.
 - Ensure you have a proper environment to read and write code as well as run tests.
-- We ask you to take on the role of a code reviewer.
-  - Read through all parts of the codebase.
-  - Add comments and take notes on anything you find relevant.
+- We ask you to familiarize yourself with the code.
 - No more than 30 minutes should be spent before the video interview.
 
 ## Project Structure
@@ -20,9 +18,7 @@ This repository contains a full-stack application with:
 - **Frontend**: Vue3 application with a textbox that calls the backend
 - **Docker Compose**: Configuration to run both apps with hot reload
 
-The app creates a simple web interface to solve the Blocks problem explained here:
-
-https://onlinejudge.org/external/1/101.pdf
+The app creates a simple web interface to solve the Blocks problem explained in [this file](./spec.md).
 
 ## Prerequisites
 

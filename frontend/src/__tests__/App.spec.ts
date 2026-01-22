@@ -41,7 +41,7 @@ describe('App', () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(fetch).toHaveBeenCalledWith(
-      'http://localhost:5170/do-work',
+      'http://localhost:5170/blocks/solve',
       expect.objectContaining({
         method: 'POST',
         headers: {

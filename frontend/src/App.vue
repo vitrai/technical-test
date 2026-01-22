@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Result from './Result.vue';
+import { validate } from './validation';
 
 const inputValue = ref<string>('');
 const apiResponse = ref<{ solution?: string; error?: string } | null>(null);
@@ -12,9 +13,15 @@ const handleInputChange = async (_e: Event): Promise<void> => {
     return;
   }
 
+  const { valid, error } = await validate(inputValue.value);
+  if (!valid) {
+    apiResponse.value = { error };
+    return;
+  }
+
   isLoading.value = true;
   try {
-    const response = await fetch('http://localhost:5170/do-work', {
+    const response = await fetch('http://localhost:5170/blocks/solve', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

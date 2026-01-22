@@ -1,11 +1,10 @@
-export function doBlocks(input: string): string {
+export function solveBlocks(input: string): string {
   // Solves the blocks problem described here: https://onlinejudge.org/external/1/101.pdf
   const lines = input.trim().split('\n');
   const n = parseInt(lines[0], 10);
   const commands = lines.slice(1);
 
   const state = Array.from({ length: n }, (_, i) => [i]);
-  console.log(state);
 
   for (const command of commands) {
     if (command === 'quit') {
@@ -20,33 +19,37 @@ export function doBlocks(input: string): string {
     const b = parseInt(target, 10);
 
     if (isNaN(a) || isNaN(b) || a < 0 || a >= n || b < 0 || b >= n) {
-      throw new Error('Block number out of range: ' + command); // Block number out of range
+      throw new Error('Block number out of range: ' + command + ` ${a} - ${b} - ${n} - ${input}`); // Block number out of range
     }
+
+    const posA = state.findIndex((pile) => pile.includes(a));
+    const posB = state.findIndex((pile) => pile.includes(b));
 
     switch (action) {
       case 'move':
         switch (preposition) {
           case 'onto': {
             // Move a onto b, clean up any other blocks
-            const toReturn = state[a]
-              .filter((x) => x !== a)
-              .concat(state[b].filter((x) => x !== b));
-            state[b] = [b, a];
-            state[a] = [];
-            for (const block of toReturn) {
-              state[block] = [block];
-            }
-            // Implement move logic here
+            const blocksAboveA = getBlocksAbove(a, posA, state);
+            const blocksAboveB = getBlocksAbove(b, posB, state);
+            const blocksBeforeA = getBlocksBelow(a, posA, state);
+            const blocksBeforeB = getBlocksBelow(b, posB, state);
+
+            state[posB] = [...blocksBeforeB, b, a];
+            state[posA] = blocksBeforeA;
+
+            returnBlocksToInitialPositions([...blocksAboveA, ...blocksAboveB], state);
             break;
           }
           case 'over': {
             // Move a over b, clean up any other blocks on top of a
-            const toReturn = state[a].filter((x) => x !== a);
-            state[b] = [...state[b], a];
-            state[a] = [];
-            for (const block of toReturn) {
-              state[block] = [block];
-            }
+            const blocksAboveA = getBlocksAbove(a, posA, state);
+            const blocksBeforeA = getBlocksBelow(a, posA, state);
+
+            state[posB] = [...state[posB], a];
+            state[posA] = blocksBeforeA;
+
+            returnBlocksToInitialPositions(blocksAboveA, state);
             break;
           }
         }
@@ -55,19 +58,24 @@ export function doBlocks(input: string): string {
         switch (preposition) {
           case 'onto': {
             // pile a onto b, clean up any other blocks
-            const toReturn = state[b].filter((x) => x !== b);
-            state[b] = [b, ...state[a]];
-            state[a] = [];
-            for (const block of toReturn) {
-              state[block] = [block];
-            }
-            // Implement move logic here
+            const blocksAboveB = getBlocksAbove(b, posB, state);
+            const blocksToMove = getBlocksFromAOnwards(a, posA, state);
+            const blocksBeforeA = getBlocksBelow(a, posA, state);
+            const blocksBeforeB = getBlocksBelow(b, posB, state);
+
+            state[posB] = [...blocksBeforeB, b, ...blocksToMove];
+            state[posA] = blocksBeforeA;
+
+            returnBlocksToInitialPositions(blocksAboveB, state);
             break;
           }
           case 'over': {
             // Move a over b, clean up any other blocks on top of a
-            state[b] = [...state[b], ...state[a]];
-            state[a] = [];
+            const blocksToMove = getBlocksFromAOnwards(a, posA, state);
+            const blocksBeforeA = getBlocksBelow(a, posA, state);
+
+            state[posB] = [...state[posB], ...blocksToMove];
+            state[posA] = blocksBeforeA;
             break;
           }
         }
@@ -79,3 +87,29 @@ export function doBlocks(input: string): string {
 
   return state.map((x, i) => `${i}: ${x.join(' ')}`).join('\n');
 }
+
+const getBlocksAbove = (block: number, pos: number, state: number[][]): number[] => {
+  const stack = state[pos];
+  const indexOfBlock = stack.indexOf(block);
+  if (indexOfBlock === -1) return [];
+  return stack.slice(indexOfBlock + 1);
+};
+
+const getBlocksBelow = (block: number, pos: number, state: number[][]): number[] => {
+  const stack = state[pos];
+  const indexOfBlock = stack.indexOf(block);
+  if (indexOfBlock === -1) return stack;
+  return stack.slice(0, indexOfBlock);
+};
+
+const returnBlocksToInitialPositions = (blocks: number[], state: number[][]): void => {
+  for (const block of blocks) {
+    state[block] = [block];
+  }
+};
+
+const getBlocksFromAOnwards = (a: number, pos: number, state: number[][]): number[] => {
+  const stack = state[pos];
+  const indexOfA = stack.indexOf(a);
+  return stack.slice(indexOfA);
+};

@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { doBlocks } from './blocks';
+import { solveBlocks } from './blocks';
 
 const app = express();
 const PORT = process.env.PORT || 5170;
@@ -16,9 +16,10 @@ app.post('/do-work', (req: Request, res: Response): void => {
       res.status(400).json({ error: 'Invalid input' });
       return;
     }
-    const solution = doBlocks(text);
+    const solution = solveBlocks(text);
     res.status(200).json({ solution });
   } catch (error) {
+    console.error('Error processing /do-work request:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     res.status(500).json({ error: errorMessage });
   }

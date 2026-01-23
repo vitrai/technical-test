@@ -3,6 +3,7 @@ import tsparser from '@typescript-eslint/parser'
 import vuePlugin from 'eslint-plugin-vue'
 import vueParser from 'vue-eslint-parser'
 import prettierConfig from 'eslint-config-prettier'
+import prettierPlugin from 'eslint-plugin-prettier'
 
 export default [
   ...vuePlugin.configs['flat/recommended'],
@@ -17,13 +18,16 @@ export default [
       }
     },
     plugins: {
-      '@typescript-eslint': tseslint
+      '@typescript-eslint': tseslint,
+      prettier: prettierPlugin
     },
     rules: {
       ...tseslint.configs['recommended'].rules,
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'vue/multi-word-component-names': 'off',
+      'prefer-const': 'error',
+      'prettier/prettier': 'error',
       ...prettierConfig.rules
     }
   },

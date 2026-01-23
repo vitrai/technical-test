@@ -27,8 +27,8 @@ export default [
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'vue/multi-word-component-names': 'off',
       'prefer-const': 'error',
-      'prettier/prettier': 'error',
-      ...prettierConfig.rules
+      ...prettierConfig.rules,
+      'prettier/prettier': 'error'
     }
   },
   {

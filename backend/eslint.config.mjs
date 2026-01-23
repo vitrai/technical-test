@@ -22,8 +22,8 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'prefer-const': 'error',
-      'prettier/prettier': 'error',
-      ...prettierConfig.rules
+      ...prettierConfig.rules,
+      'prettier/prettier': 'error'
     }
   },
   {

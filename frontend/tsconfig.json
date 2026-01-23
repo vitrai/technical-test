@@ -23,5 +23,5 @@
     /* Test types */
     "types": ["vitest/globals"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "e2e/**/*.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.vue"]
 }

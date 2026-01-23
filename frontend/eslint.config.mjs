@@ -1,25 +1,25 @@
-import tseslint from '@typescript-eslint/eslint-plugin'
-import tsparser from '@typescript-eslint/parser'
-import vuePlugin from 'eslint-plugin-vue'
-import vueParser from 'vue-eslint-parser'
-import prettierConfig from 'eslint-config-prettier'
-import prettierPlugin from 'eslint-plugin-prettier'
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsparser from '@typescript-eslint/parser';
+import vuePlugin from 'eslint-plugin-vue';
+import vueParser from 'vue-eslint-parser';
+import prettierConfig from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
 
 export default [
   ...vuePlugin.configs['flat/recommended'],
   {
-    files: ['src/**/*.ts', 'src/**/*.vue', 'e2e/**/*.ts'],
+    files: ['**/*.ts', '**/*.vue'],
     languageOptions: {
       parser: vueParser,
       parserOptions: {
         parser: tsparser,
         project: './tsconfig.json',
-        extraFileExtensions: ['.vue']
-      }
+        extraFileExtensions: ['.vue'],
+      },
     },
     plugins: {
       '@typescript-eslint': tseslint,
-      prettier: prettierPlugin
+      prettier: prettierPlugin,
     },
     rules: {
       ...tseslint.configs['recommended'].rules,
@@ -28,10 +28,10 @@ export default [
       'vue/multi-word-component-names': 'off',
       'prefer-const': 'error',
       ...prettierConfig.rules,
-      'prettier/prettier': 'error'
-    }
+      'prettier/prettier': 'error',
+    },
   },
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**']
-  }
-]
+    ignores: ['dist/**', 'node_modules/**', 'coverage/**'],
+  },
+];

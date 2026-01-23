@@ -1,20 +1,20 @@
-import tseslint from '@typescript-eslint/eslint-plugin'
-import tsparser from '@typescript-eslint/parser'
-import prettierConfig from 'eslint-config-prettier'
-import prettierPlugin from 'eslint-plugin-prettier'
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsparser from '@typescript-eslint/parser';
+import prettierConfig from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
 
 export default [
   {
-    files: ['src/**/*.ts', '__tests__/**/*.ts'],
+    files: ['**/*.ts'],
     languageOptions: {
       parser: tsparser,
       parserOptions: {
-        project: './tsconfig.json'
-      }
+        project: './tsconfig.json',
+      },
     },
     plugins: {
       '@typescript-eslint': tseslint,
-      prettier: prettierPlugin
+      prettier: prettierPlugin,
     },
     rules: {
       ...tseslint.configs['recommended'].rules,
@@ -23,10 +23,10 @@ export default [
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'prefer-const': 'error',
       ...prettierConfig.rules,
-      'prettier/prettier': 'error'
-    }
+      'prettier/prettier': 'error',
+    },
   },
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**']
-  }
-]
+    ignores: ['dist/**', 'node_modules/**', 'coverage/**'],
+  },
+];

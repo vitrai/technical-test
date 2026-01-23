@@ -8,7 +8,7 @@ import prettierPlugin from 'eslint-plugin-prettier'
 export default [
   ...vuePlugin.configs['flat/recommended'],
   {
-    files: ['src/**/*.ts', 'src/**/*.vue'],
+    files: ['src/**/*.ts', 'src/**/*.vue', 'e2e/**/*.ts'],
     languageOptions: {
       parser: vueParser,
       parserOptions: {
